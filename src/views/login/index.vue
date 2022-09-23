@@ -232,6 +232,6 @@ $light_gray:#eee;
     color: $dark_gray;
     cursor: pointer;
     user-select: none;
-  }
+         }
 }
 </style>
