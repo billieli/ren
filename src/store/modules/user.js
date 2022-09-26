@@ -2,7 +2,7 @@ import { login } from '@/api/login'
 export default {
   namespaced: true,
   state: {
-    token: null
+    token: ''
   },
   mutations: {
     SET_TOKEN(state, token) {
