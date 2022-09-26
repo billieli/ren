@@ -42,12 +42,14 @@ export default {
       }
     }
   },
+  created() {
+    // this.$store.dispatch('user/getUserInfo')
+  },
   methods: {
     handleClickOutside() {
       this.$store.dispatch('app/closeSideBar', { withoutAnimation: false })
     }
-  }
-}
+  }}
 </script>
 
 <style lang="scss" scoped>
