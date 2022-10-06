@@ -5,10 +5,10 @@
         <tree-node :tree-node="company" :isrool="false" @addDepts="handleAddDept" />
       </el-card>
       <el-tree :data="departs" :default-expand-all="true" :props="defaultProps">
-        <treeNode slot-scope="{data}" :tree-node="data" style="width:100%" @addDepts="handleAddDept" />
+        <treeNode slot-scope="{data}" :tree-node="data" style="width:100%" @reflist="getDepartments" @addDepts="handleAddDept" @editDepts="editDepts" />
       </el-tree>
     </div>
-    <add-dept :show-dialog.sync="showDialog" :tree-node="currentNode" />
+    <add-dept ref="addDept" :show-dialog.sync="showDialog" :tree-node="currentNode" />
   </div>
 </template>
 
@@ -49,7 +49,12 @@ export default {
     handleAddDept(node) {
       console.log(111)
       this.showDialog = true
-      this.currentNode = node
+      this.currentNode = { ...node }
+    },
+    editDepts(node) {
+      this.showDialog = true
+      this.currentNode = { ...node }
+      this.$refs.addDept.formData = this.currentNode
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <!-- 新增部门的弹层 -->
-  <el-dialog title="新增部门" :visible="showDialog" @close="closevisible">
+  <el-dialog :title="title" :visible="showDialog" @close="closevisible">
     <!-- 表单组件  el-form   label-width设置label的宽度   -->
     <!-- 匿名插槽 -->
     <el-form ref="addept" label-width="120px" :model="formData" :rules="rules">
@@ -31,7 +31,7 @@
 </template>
 <script>
 import { getDepartments } from '@/api/departments'
-import { getEmployeeSimple, addDepartments } from '@/api/employess'
+import { getEmployeeSimple, addDepartments, updateDepartments } from '@/api/employess'
 export default {
   props: {
     showDialog: {
@@ -45,16 +45,29 @@ export default {
   }, data() {
     const codecheck = async(rule, value, callback) => {
       const { depts } = await getDepartments()
-      console.log('depts', depts)
-      const isRepeat = depts.some(ele => ele.code === value)
+      // console.log('depts', depts)
+      let isRepeat = true
+      if (this.formData.id) {
+        isRepeat = depts.some(ele => ele.id !== this.formData.id && ele.code === value)
+      } else {
+        isRepeat = depts.some(ele => ele.code === value)
+      }
       isRepeat ? callback(new Error('模块编码已存在')) : callback()
     }
     const namecheck = async(rule, value, callback) => {
       const { depts } = await getDepartments()
-      const deptstj = depts.filter(item => item.pid === this.treeNode.id)
+      let isRepeat = true
+      if (this.formData.id) {
+        const deptstj1 = depts.filter(item => item.pid === this.treeNode.pid && item.id !== this.treeNode.id)
+        // console.log(deptstj1)
+        isRepeat = deptstj1.some(ele => ele.name === value)
+      } else {
+        const deptstj = depts.filter(item => item.pid === this.treeNode.pid)
+
+        isRepeat = deptstj.some(item => item.name === value)
+      }
       // 一层判断，拿出来相同id的
-      console.log(deptstj)
-      const isRepeat = deptstj.some(item => item.name === value)
+      // console.log(deptstj)
       // 二层判断，拿出来相同id的进行判断名字和输入的二value相同的
       isRepeat ? callback(new Error(`该部门下已存在${value}部门`)) : callback()
     }
@@ -89,6 +102,12 @@ export default {
 
     }
   },
+  computed: {
+    title() {
+      // return 111
+      return this.formData.id ? '编辑部门' : '新增部门'
+    }
+  },
   methods: {
     closevisible() {
       this.$emit('update:showDialog', false)
@@ -109,8 +128,12 @@ export default {
       try {
         await this.$refs.addept.validate()
         this.loading = true
-        await addDepartments({ ...this.formData, ...this.treeNode.id })
-        this.$message.success('新增成功')
+        if (this.treeNode.id) {
+          await updateDepartments(this.formData)
+        } else {
+          await addDepartments({ ...this.formData, ...this.treeNode.id })
+        }
+        this.treeNode.id ? this.$message.success('编辑成功') : this.$message.success('新增成功')
         this.$parent.getDepartments()
         this.closevisible()
       } catch (e) {

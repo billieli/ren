@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import { delDepartments } from '@/api/employess'
 export default {
   props: {
     treeNode: {
@@ -50,9 +51,21 @@ export default {
       } else if (type === 'edit') {
         console.log('edit')
         // 编辑
+        this.$emit('editDepts', this.treeNode)
       } else {
         // 删除
-        console.log('del')
+        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true
+        }).then((res) => {
+          return delDepartments(this.treeNode.id)
+        }).then((res) => {
+          this.$emit('reflist')
+          this.$message.success('删除成功')
+        })
+        // console.log('del')
       }
     }
   }
