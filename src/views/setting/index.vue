@@ -76,7 +76,7 @@
         </el-tab-pane>
       </el-tabs>
     </el-card>
-    <add-role ref="addRole" :dialog-visible.sync="dialogVisible" :refresh-list="getRoleList" />
+    <add-role ref="addRole" :dialog-visible.sync="dialogVisible" @refresh-list="getRoleList" />
   </div>
 </template>
 
@@ -106,11 +106,13 @@ export default {
   },
   methods: {
     async  getRoleList() {
+      console.log(1)
       try {
         this.loading = true
         const { total, rows } = await getRoleList(this.page)
         this.total = total
         this.roleList = rows
+        console.log('rowlist', rows)
       } catch (e) {
         console.log(e)
       } finally {
