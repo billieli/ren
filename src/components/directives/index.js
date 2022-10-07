@@ -5,10 +5,10 @@ export const imgerror = {
       el.src = binding.value
     }
 
-    console.log(1, el)
+    // console.log(1, el)
     // dom节点信息
-    console.log(2, binding)
+    // console.log(2, binding)
     // 相关信息
-    console.log(3, vnode)
+    // console.log(3, vnode)
   }
 }

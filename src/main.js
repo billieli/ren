@@ -1,7 +1,6 @@
 import Vue from 'vue'
 
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
-
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 // import locale from 'element-ui/lib/locale/lang/en' // lang i18n
@@ -12,11 +11,14 @@ import App from './App'
 import store from './store'
 import router from './router'
 import * as directives from '@/components/directives'
-console.log(directives)
-console.log(Object.keys(directives))
+// console.log(directives)
+// console.log('Object', Object.keys(directives))
+// console.log('Object', Object.values(directives))
 
 import '@/icons' // icon
 import '@/permission' // permission control
+import components from '@/components'
+Vue.use(components)
 
 /**
  * If you don't want to use mock-server
