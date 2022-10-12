@@ -38,7 +38,7 @@ module.exports = {
     },
     proxy: {
       '/api': {
-        target: 'http://42.192.129.12:3001/',
+        target: 'http://ihrm.itheima.net/',
         changeOrigin: true
       }
     }
