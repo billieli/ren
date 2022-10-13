@@ -9,5 +9,12 @@ export default {
     meta: {
       title: ' 员工管理 ', icon: 'people'
     }
-  }]
+  },
+  {
+    path: '/employees/datail/:id',
+    component: () => import('@/views/employees/components/detail.vue'),
+    hidden: true
+
+  }
+  ]
 }

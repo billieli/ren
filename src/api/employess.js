@@ -83,3 +83,25 @@ export function importEmployee(data) {
     data
   })
 }
+/**
+ * 获取员工岗位信息
+ */
+export function getEmployeesjob(id) {
+  return request({
+    url: `/employees/${id}/jobs`,
+    method: 'get'
+
+  })
+}
+
+/**
+ * 获取员工岗位信息
+ */
+export function saveEmployeesjob(data) {
+  return request({
+    url: `/employees/${data.userId}/jobs`,
+    method: 'put',
+    data
+
+  })
+}

@@ -27,7 +27,7 @@
           <el-table-column label="账户状态" prop="enableState" />
           <el-table-column label="操作" fixed="right" width="280">
             <template slot-scope="{row}">
-              <el-button type="text" size="small">查看</el-button>
+              <el-button type="text" size="small" @click="goDetail(row)">查看</el-button>
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
@@ -59,11 +59,13 @@ import { delEmployee } from '@/api/employess'
 import EnumHireType from '@/api/constant/employees'
 import { getEmployeeList } from '@/api/employess'
 import addEmployee from './components/add-employee.vue'
+
 // import { reverse } from 'mock/user'
 export default {
   name: 'HrsaasIndex',
   components: {
     addEmployee
+
   },
   data() {
     return {
@@ -103,7 +105,8 @@ export default {
     },
     handleEmploy() {
       this.dialoyVsible = true
-    }, async del(id) {
+    },
+    async del(id) {
       try {
         await this.$confirm('确认删除吗', '提示')
         await delEmployee(id)
@@ -121,6 +124,7 @@ export default {
         size: this.total
       })
       // console.log(rows)
+      // 拿到数据后建设一个映射关系
       const exportExcelMapPath = {
         '手机号': 'mobile',
         '姓名': 'username',
@@ -154,6 +158,10 @@ export default {
         bookType: 'xlsx' // 非必填
       })
       console.log(data)
+    },
+    goDetail(row) {
+      console.log(row)
+      this.$router.push('/employees/datail/' + row.id)
     }
 
   }
