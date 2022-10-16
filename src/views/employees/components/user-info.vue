@@ -1,5 +1,7 @@
 <template>
   <div class="user-info">
+    <!-- @cilck="$router.push('/employees/print/'+userId)" -->
+    <i class="el-icon-printer" @click="$router.push('/employees/print/'+userId+'?type=personal')" />
     <!-- 个人信息 -->
     <el-form label-width="220px">
       <!-- 工号 入职时间 -->
@@ -58,6 +60,7 @@
         <el-col :span="12">
           <el-form-item label="员工头像">
             <!-- 放置上传图片 -->
+            <Uploading ref="upimg" :defulimg="defulimg" @success="updataimg" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -91,6 +94,8 @@
 
         <el-form-item label="员工照片">
           <!-- 放置上传图片 -->
+          <Uploading :defulimg="userimg" @success="updatauserimg" />
+
         </el-form-item>
         <el-form-item label="国家/地区">
           <el-select v-model="formData.nationalArea" class="inputW2">
@@ -457,7 +462,9 @@ export default {
         isThereAnyCompetitionRestriction: '', // 有无竞业限制
         proofOfDepartureOfFormerCompany: '', // 前公司离职证明
         remarks: '' // 备注
-      }
+      },
+      defulimg: '',
+      userimg: ''
     }
   },
   created() {
@@ -465,13 +472,20 @@ export default {
     this.loademployees()
   },
   methods: {
+
     async loaduserinfo() {
       const res = await getUserDatailById(this.userId)
+      if (res.staffPhoto) {
+        this.defulimg = res.staffPhoto
+      }
       this.userInfo = res
       console.log('res', res)
     },
     async saveinfo() {
       try {
+        if (this.$refs.upimg.loading) {
+          return this.$message.error('头像正在上传')
+        }
         await saveUserDatail(this.userInfo)
         this.$message.success('成功')
       } catch (e) {
@@ -480,8 +494,12 @@ export default {
     },
     async loademployees() {
       const res = await getPersonalDetail(this.userId)
-      console.log(res)
+      if (res.staffPhoto) {
+        this.userimg = res.staffPhoto
+      }
+
       this.formData = res
+      console.log(res)
     },
     async saveEmployeesInfo() {
       try {
@@ -490,6 +508,15 @@ export default {
       } catch (e) {
         this.$message.error('失败')
       }
+    },
+    updataimg(url) {
+      // console.log(url)
+      this.userInfo.staffPhoto = url
+      // console.log(this.formData.staffPhoto)
+    },
+    updatauserimg(url) {
+      this.formData.staffPhoto = url
+      // console.log(this.formData.staffPhoto)
     }
   }
 }

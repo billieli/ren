@@ -14,7 +14,7 @@ export default {
   install:
     function(Vue) {
       components.forEach(ele => {
-        console.log(ele)
+        // console.log(ele)
         Vue.component(ele.default.name, ele.default)
       })
       Object.keys(filters).forEach(key => {

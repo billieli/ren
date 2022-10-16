@@ -18,6 +18,8 @@ import * as directives from '@/components/directives'
 import '@/icons' // icon
 import '@/permission' // permission control
 import components from '@/components'
+import Print from 'vue-print-nb'
+Vue.use(Print)
 Vue.use(components)
 
 /**

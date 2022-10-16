@@ -15,6 +15,12 @@
       <el-card>
         <el-table v-loading="loading" border :data="list">
           <el-table-column label="序号" sortable="" width="80" type="index" />
+          <el-table-column label="头像" prop="staffPhoto">
+            <template slot-scope="{row}">
+              <img :src="row.staffPhoto" alt="" style="width:100px;height:100px" @click="ganCode(row.staffPhoto)">
+              <!-- <p>{{ row }}</p> -->
+            </template>
+          </el-table-column>
           <el-table-column label="姓名" prop="username" />
           <el-table-column label="工号" prop="workNumber" />
           <el-table-column label="聘用形式" prop="formOfEmployment" :formatter="formatterFn" />
@@ -50,6 +56,13 @@
       </el-card>
       <addEmployee :dialoy-vsible.sync="dialoyVsible" />
     </div>
+    <el-dialog
+      title="头像"
+      :visible.sync="dialogVis"
+      width="30%"
+    >
+      <canvas ref="canvas" />
+    </el-dialog>
 
   </div>
 </template>
@@ -61,6 +74,7 @@ import { getEmployeeList } from '@/api/employess'
 import addEmployee from './components/add-employee.vue'
 
 // import { reverse } from 'mock/user'
+import QRcode from 'qrcode'
 export default {
   name: 'HrsaasIndex',
   components: {
@@ -77,7 +91,8 @@ export default {
       total: 0,
       loading: false,
       hireType: EnumHireType.hireType,
-      dialoyVsible: false
+      dialoyVsible: false,
+      dialogVis: false
 
     }
   },
@@ -162,6 +177,19 @@ export default {
     goDetail(row) {
       console.log(row)
       this.$router.push('/employees/datail/' + row.id)
+    },
+    ganCode(staffPhoto) {
+      if (!staffPhoto) return this.$message.error('暂无头像')
+      this.dialogVis = true
+      // console.log(QRcode)
+      this.$nextTick(() => {
+        QRcode.toCanvas(this.$refs.canvas, 'sample text ', function(error) {
+          if (error) console.error(error)
+          console.log('success!')
+        })
+      }
+
+      )
     }
 
   }

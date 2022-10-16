@@ -2,8 +2,8 @@
   <div class="dashboard-container">
     <div class="dashboard-text">name: {{ name }}</div>
     <!-- <svg-icon icon-class="eye-open" /> -->
-  </div>
-</template>
+    <Uploading @success="success1" />
+  </div></template>
 
 <script>
 import { mapGetters } from 'vuex'
@@ -14,6 +14,10 @@ export default {
     ...mapGetters([
       'name'
     ])
+  }, methods: {
+    success1(url) {
+      console.log(url)
+    }
   }
 
 }

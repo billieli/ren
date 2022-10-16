@@ -66,7 +66,7 @@ export default {
       }
     },
     tabClick() {
-      this.activeName = Cookies.set('activeName')
+      Cookies.set('activeName', this.activeName)
     }
   }
 }

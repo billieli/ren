@@ -15,6 +15,12 @@ export default {
     component: () => import('@/views/employees/components/detail.vue'),
     hidden: true
 
+  },
+  {
+    path: 'print/:id',
+    component: () => import('@/views/employees/components/printer.vue'),
+    hidden: true
+
   }
   ]
 }
